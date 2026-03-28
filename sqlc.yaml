@@ -1,0 +1,16 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "db/queries/"          # Where your hand-written SQL lives.
+    schema:  "db/migrations/"       # sqlc reads your DDL to know column types.
+    gen:
+      go:
+        package:        "db"
+        out:            "internal/db"
+        emit_json_tags: true         # Adds `json:"..."` tags to model fields.
+        emit_interface: true         # Generates a Querier interface (useful for mocking in tests).
+    overrides:
+      # Map PostgreSQL TIMESTAMPTZ to Go's time.Time instead of pgtype.Timestamptz
+      # so model fields stay idiomatic and easy to JSON-marshal.
+      - db_type: "pg_catalog.timestamptz"
+        go_type:  "time.Time"

@@ -30,7 +30,7 @@ A RESTful HTTP API for managing users, built with Go. Provides full CRUD operati
 
 ```bash
 # 1. Clone and enter the project
-git clone <repo-url>
+git clone https://github.com/emadhejazian/gotest1
 cd gotest1
 
 # 2. Copy environment config

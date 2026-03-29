@@ -29,12 +29,12 @@ import (
 
 func main() {
 	// -------------------------------------------------------------------------
-	// 1. Load .env (development only)
+	// 1. Load .env.local (development only)
 	// -------------------------------------------------------------------------
-	// godotenv.Load is a no-op if .env does not exist, which is the expected
+	// godotenv.Load is a no-op if .env.local does not exist, which is the expected
 	// behaviour in production where env vars are injected by the platform.
-	if err := godotenv.Load(); err != nil {
-		slog.Warn("no .env file found; relying on environment variables")
+	if err := godotenv.Load(".env.local"); err != nil {
+		slog.Warn("no .env.local file found; relying on environment variables")
 	}
 
 	// -------------------------------------------------------------------------

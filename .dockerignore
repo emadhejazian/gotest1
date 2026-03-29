@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.local
+.env.example
+
+# Documentation
+*.md
+CLAUDE.md
+
+# IDE
+.vscode
+.idea
+
+# Build artifacts
+api
+*.exe
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore

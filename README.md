@@ -8,9 +8,11 @@ A RESTful HTTP API for managing users, built with Go. Provides full CRUD operati
 
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
+- [Deployment](#deployment)
 - [Configuration](#configuration)
 - [Database Setup](#database-setup)
 - [Running the Server](#running-the-server)
+- [Quick API Examples](#quick-api-examples)
 - [API Reference](#api-reference)
 - [Project Structure](#project-structure)
 - [Development](#development)
@@ -43,6 +45,58 @@ psql "$DATABASE_URL" -f db/migrations/001_create_users.sql
 # 4. Run the server
 go run ./cmd/api
 # Server starts on http://localhost:8080
+```
+
+---
+
+## Deployment
+
+### AWS Deployment
+
+Deploy to AWS using ECS (Elastic Container Service) with Fargate:
+
+- **[AWS Quick Start Guide](./AWS_QUICK_START.md)** - Simplified step-by-step guide
+- **[AWS Deployment Guide](./AWS_DEPLOYMENT_GUIDE.md)** - Detailed explanations and troubleshooting
+
+Use the helper script for common tasks:
+```bash
+./deploy-to-aws.sh
+```
+
+### Docker Setup (Local Development)
+
+The easiest way to run this project locally is using Docker Compose, which automatically sets up both the API server and PostgreSQL database.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/emadhejazian/gotest1
+cd gotest1
+
+# 2. Start the application with Docker Compose
+docker-compose up -d
+
+# 3. Check the logs
+docker-compose logs -f api
+
+# 4. The API is now available at http://localhost:8080
+```
+
+The database schema is automatically applied on first startup.
+
+**Useful Docker commands:**
+
+```bash
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (clears database)
+docker-compose down -v
+
+# Rebuild the API image
+docker-compose up -d --build
+
+# View logs
+docker-compose logs -f
 ```
 
 ---
@@ -124,6 +178,36 @@ GET /health
 ```
 
 Suitable for load balancer liveness probes. Lives outside the versioned API prefix.
+
+---
+
+## Quick API Examples
+
+Here are some quick curl examples to test your API:
+
+**Create a user:**
+```bash
+curl -X POST http://localhost:8080/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com"}'
+```
+
+**Get all users:**
+```bash
+curl http://localhost:8080/api/v1/users
+```
+
+**Get a specific user:**
+```bash
+curl http://localhost:8080/api/v1/users/1
+```
+
+**Delete a user:**
+```bash
+curl -X DELETE http://localhost:8080/api/v1/users/1
+```
+
+For detailed API documentation, see the [API Reference](#api-reference) section below.
 
 ---
 

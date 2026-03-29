@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gotest1-postgres
+    environment:
+      POSTGRES_USER: gotest1
+      POSTGRES_PASSWORD: gotest1
+      POSTGRES_DB: gotest1
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gotest1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gotest1-api
+    environment:
+      DATABASE_URL: postgres://gotest1:gotest1@postgres:5432/gotest1?sslmode=disable
+      PORT: 8080
+      APP_ENV: development
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
